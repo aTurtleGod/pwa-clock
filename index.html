@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PWA Alarm Clock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to manifest for PWA installability -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Basic styling -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>PWA Alarm Clock</h1>
+  <label for="alarmTime">Set Alarm Time:</label>
+  <input type="time" id="alarmTime">
+  <button onclick="setAlarm()">Set Alarm</button>
+  <p id="status"></p>
+  <!-- Alarm sound (must provide alarm.mp3 in your repo) -->
+  <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+  
+  <!-- Main JS for alarm logic -->
+  <script>
+    // Request notification permission on load
+    if ('Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+
+    function setAlarm() {
+      const alarmInput = document.getElementById('alarmTime');
+      const status = document.getElementById('status');
+      const alarmTime = alarmInput.value;
+      if (!alarmTime) {
+        status.textContent = 'Please select a time.';
+        return;
+      }
+      const now = new Date();
+      const [hours, minutes] = alarmTime.split(':');
+      const alarmDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
+      let timeToAlarm = alarmDate.getTime() - now.getTime();
+      if (timeToAlarm < 0) timeToAlarm += 24 * 60 * 60 * 1000; // Next day
+      status.textContent = `Alarm set for ${alarmTime}`;
+      setTimeout(() => {
+        document.getElementById('alarmSound').play();
+        if (Notification.permission === 'granted') {
+          new Notification('Alarm!', { body: 'Your alarm is ringing!' });
+        }
+        status.textContent = 'Alarm ringing!';
+      }, timeToAlarm);
+    }
+  </script>
+  <!-- Register the service worker via reg.js -->
+  <script src="reg.js"></script>
+</body>
+</html>
