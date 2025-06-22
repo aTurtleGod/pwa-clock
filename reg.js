@@ -1,7 +1,11 @@
-
+// reg.js
+// Registers the service worker for offline support and PWA features
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(reg => console.log('Service Worker registered'))
-    .catch(err => console.log('Service Worker registration failed:', err));
+  navigator.serviceWorker.register('service-worker.js')
+    .then(reg => {
+      console.log('Service Worker registered:', reg);
+    })
+    .catch(err => {
+      console.error('Service Worker registration failed:', err);
+    });
 }
-
