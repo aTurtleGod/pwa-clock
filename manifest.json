@@ -1,7 +1,7 @@
 {
-  "name": "PWA Alarm Clock",
-  "short_name": "AlarmClock",
-  "start_url": "/offline.html",
+  "name": "Turtle Alarm Clock",
+  "short_name": "TurtleAlarm",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#222222",
